@@ -1,0 +1,36 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts,amsmath}
+\usepackage{fourier}
+
+\title{Problem Description}
+
+\begin{document}
+\maketitle 
+
+\section{Introduction}
+
+In this document, we aim to detail the implementation of a Fortran project using ...
+
+
+\section{Problem Description}
+
+Given some matrix $P \in {\mathbb{R}}^{4\times 4}$, let $x=(x_1,x_2,x_3,x_4)$, $D = \text{diag}(x)$ and $\varepsilon = (\varepsilon_{ij}) \in \mathbb{R}^{4\times 4}$. We are interested in solving the following problem:
+
+\begin{align*}
+	\text{minimize} & \qquad \sum_{i=1}^4\sum_{j=1}^4 \varepsilon_{ij}^2\\
+	\text{subject to} & \qquad x_4=1\\
+    & \qquad D(P+\varepsilon) \text{ must be persymmetric.}
+\end{align*}
+This can be written as the following problem:
+\begin{align*}
+	\text{minimize} & \quad \sum_{i=1}^4\sum_{j=1}^4 \varepsilon_{ij}^2\\
+	\text{subject to} & \quad x_4=1\\
+	& \quad x_i (P_{ij}+\varepsilon_{ij}) - x_{\alpha(j)} (P_{\alpha(j)\alpha(i)}+\varepsilon_ {\alpha(j)\alpha(i)}) = 0,\\ 
+    & \quad \text{for } i=1, 2, 3, j=1, \ldots, 4-i \text{ where } \alpha(i)=5-i.
+\end{align*}
+
+
+\section{Solving}
+
+\section{Results}
+\end{document}
