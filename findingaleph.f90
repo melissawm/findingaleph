@@ -16,11 +16,11 @@ program main
        PP(4,4,1428), PE(4,4), DXPE(4,4), normdif, t1, t2
   real (kind = wp), parameter :: eps = 1.e-3_wp
   double precision :: dlange
-  character*9 :: filename
-  character*19 :: outfilename
-  character*5 :: option
-  character*80 :: arg
-  external :: fun, grad, hess, dlange
+  character(len=9) :: teste, filename
+  character(len=19) :: outfilename
+  character(len=5) :: option
+  character(len=80) :: arg
+  external :: probfun, gradprob, hessprob, dlange
   
   ! ============================================================
   !
@@ -131,10 +131,11 @@ program main
           abs(DXPE(1,1)-DXPE(4,4)), abs(DXPE(2,2)-DXPE(3,3)), &
           abs(DXPE(2,1)-DXPE(4,3)), abs(DXPE(3,1)-DXPE(4,2)))
 
-     ! writepfile(k,x) writes the solution x(1:20) for problem k in the file
-     ! pefilenn.txt, where nn is 01 through 10, depending on the problem
-     ! number (agrees with matrizesnn.txt)
-     call writepefile(k,x,option)
+     ! writepfile(k, x, option) writes the solution x(1:20) for problem k in the
+     ! file pefilenn.txt, where nn is 01 through 10, depending on the problem
+     ! number (agrees with matrizesnn.txt) if options is 'pmatf'. If options is
+     ! 'pairs', the output file is called 'pefilepairs.txt'.
+     call writepefile(k, x, option)
 
      !
      ! Print outcome for each problem
