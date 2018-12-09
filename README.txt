@@ -7,7 +7,7 @@ files, please refer to README_readpfile.txt
 
 Included in this package are the following files and file structure:
 
-- LICENSE.txt file
+- LICENSE file
 
 - README.txt: this file
 
