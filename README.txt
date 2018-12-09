@@ -6,7 +6,11 @@ files, please refer to README_readpfile.txt
 -------------------------
 
 Included in this package are the following files and file structure:
-    
+
+- LICENSE.txt file
+
+- README.txt: this file
+
 - cleanpfile.py: python script used to clean up the pefiles (when the
   optimization solver failed to solve a given problem, the result is written in
   the pefile as '**********', which is not read properly by MATLAB. We
@@ -21,8 +25,6 @@ Included in this package are the following files and file structure:
 
 - readbacterial.m: MATLAB script for manipulating the output of the optimization
   solver on bacterial data.
-
-- README.txt: this file
 
 - readpfile.m: MATLAB script for manipulating the output of the optimization
   solver on random data
@@ -53,9 +55,8 @@ The input and results files can be found as follows:
 1 - Requirements
 ----------------
 
-This software was used on Chakra Linux 64-bit, with gcc/gfortran version 5.2.0,
-and Galahad version 2.50001 (4/May/2013 16:00 GMT). The actual results were
-obtained using gcc/gfortran 4.9.0
+This software was used on Ubuntu Linux 64-bit, with gcc/gfortran version 5.4.0,
+and Galahad version 2.60004 (21/October/2015). 
 
 To run it, you need gcc/gfortran >= 4.9.0.
 
@@ -189,6 +190,6 @@ Download link: http://www.galahad.rl.ac.uk/doc/lancelot_simple.pdf
 (included in the docs directory)
 
 --------------------------
-Revised December 23, 2017.
+Revised December 9, 2018.
 Melissa Weber Mendonca
 melissa.mendonca@ufsc.br
