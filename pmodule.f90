@@ -34,11 +34,11 @@ contains
        ! Example: the file matrizes04.txt contains problems 30000000 to 39999999
        ! thus
        ! mypos = (probnumber-30000001)*160+1+40*(i-1)+10*(j-1)
-       open(input, file='matrizes04.txt', status='old', access='stream')
+       open(input, file='matrizes01.txt', status='old', access='stream')
        inquire(input, pos=mypos)
        do i = 1,4
           do j = 1,4
-             mypos = (probnumber-30000001)*160+1+40*(i-1)+10*(j-1)
+             mypos = (probnumber-00000001)*160+1+40*(i-1)+10*(j-1)
              !print *, mypos
              read(input, pos=mypos) teste
              !print *, 1+40*(i-1)+10*(j-1)
@@ -64,7 +64,7 @@ contains
     else 
        ! All P+E matrices are written to 10 files named pefile01.txt - pefile10.txt
        ! The number on this file must match the number on the matrizesxx.txt file
-       open(output, file='/home/melissa/pefile04.txt', status='old', access='stream', form='formatted', position='append')
+       open(output, file='pefile01.txt', status='old', access='stream', form='formatted', position='append')
        write(output, fmt='(20(f10.7,x))', advance='yes') x
     endif
     close(output)

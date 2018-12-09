@@ -12,15 +12,17 @@ program main
        nprobs, iargc, numarg, probnumber
   integer*8 :: mypos
   integer, parameter :: input = 47
-  real (kind = wp) :: x(20), fx, lower(20), upper(20), w(4), maxerror(1428), &
-       PP(4,4,1428), PE(4,4), DXPE(4,4), normdif, t1, t2
+  real (kind = wp) :: x(20), fx, lower(20), upper(20), w(4), maxerror, &
+       maxerror_array(1428), PP(4,4,1428), PE(4,4), DXPE(4,4), normdif, t1, t2
   real (kind = wp), parameter :: eps = 1.e-3_wp
   double precision :: dlange
   character(len=9) :: teste, filename
   character(len=19) :: outfilename
   character(len=5) :: option
   character(len=80) :: arg
-  external :: probfun, gradprob, hessprob, dlange
+  ! due to a bug in GALAHAD, the objective function subroutine MUST be
+  ! called probfun.
+  external :: probfun, grad, hess, dlange
   
   ! ============================================================
   !
@@ -86,7 +88,7 @@ program main
   ! x(13) x(14) x(15) x(16)
   ! x(17) x(18) x(19) x(20)
 
-  maxerror = zero
+  maxerror_array = zero
 
   do k = probnumber,nprobs
      ! readpfile(k,option) reads the P matrix for problem k from the master file
@@ -109,10 +111,10 @@ program main
      x = one
 
      ! Call solver
-     call lancelot_simple(20, x, fx, exitcode, my_fun = fun, my_grad = grad, &
+     call lancelot_simple(20, x, fx, exitcode, my_fun = probfun, my_grad = grad, &
           my_hess = hess, bl = lower, bu = upper, neq = 10, nin = 0, &
           iters = iterations, maxit = 1000, gradtol = eps, feastol = eps, &
-          print_level = 1)
+          print_level = 0)
 
      ! PE is P+E
      do i = 1,4
@@ -127,9 +129,12 @@ program main
      DXPE(4,1:4) = PE(4,1:4) ! x(4) = one
      
      ! Persymmetric error
-     maxerror(k) = max(abs(DXPE(1,3)-DXPE(2,4)), abs(DXPE(1,2)-DXPE(3,4)), &
+     maxerror = max(abs(DXPE(1,3)-DXPE(2,4)), abs(DXPE(1,2)-DXPE(3,4)), &
           abs(DXPE(1,1)-DXPE(4,4)), abs(DXPE(2,2)-DXPE(3,3)), &
           abs(DXPE(2,1)-DXPE(4,3)), abs(DXPE(3,1)-DXPE(4,2)))
+     if ( option .eq. 'pairs' ) then
+        maxerror_array(k) = maxerror
+     endif
 
      ! writepfile(k, x, option) writes the solution x(1:20) for problem k in the
      ! file pefilenn.txt, where nn is 01 through 10, depending on the problem
@@ -148,13 +153,14 @@ program main
      normdif = DLANGE('f',4,4,P(1:4,1:4)-PE,4,w)
      write(*,'(A,4g15.7)') "x = ", (x(j), j = 1,4)
      write(*,'(A,g12.7)') "norm(P-(P+E),fro) = ", normdif
-     write(*,'(A,g12.7)') "maxerror = ", maxerror(k)
+     write(*,'(A,g12.7)') "maxerror = ", maxerror
+     write(*,'(A,i3)') "LANCELOT_SIMPLE exit code: ", exitcode
      write(*,'(A)') "===================================================="
 
   enddo
   if ( option .eq. 'pairs' ) then
-     print *, "Maximum error for all problems: ", maxval(maxerror)
-     print *, "Mean error for all problems: ", sum(maxerror)/1428.0_wp
+     print *, "Maximum error for all problems: ", maxval(maxerror_array)
+     print *, "Mean error for all problems: ", sum(maxerror_array)/1428.0_wp
   endif
 
   call cpu_time(t2)
@@ -165,13 +171,15 @@ program main
   !  Exit
   !
 
-  if ( exitcode .ne. 0 ) then
-     print *, "Exitcode = ", exitcode
-     stop -1
-  else
-     stop
-  endif
+  ! if ( exitcode .ne. 0 ) then
+  !    print *, "Exitcode = ", exitcode
+  !    stop -1
+  ! else
+  !    stop
+  ! endif
 
+  stop
+  
   ! ============================================================
   ! ============================================================
 
@@ -179,7 +187,7 @@ end program main
 
 ! ============================================================
 
-subroutine fun(x, fx, i)
+subroutine probfun(x, fx, i)
 
   use pmodule
   implicit none
@@ -222,7 +230,7 @@ subroutine fun(x, fx, i)
      end select
   endif
   return
-end subroutine fun
+end subroutine probfun
 
 subroutine grad(x, gradx, i)
 
