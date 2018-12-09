@@ -2,6 +2,14 @@ module pmodule
 
   ! This module contains routines needed to read/write the matrix files.
   ! It is used in findingaleph.f90
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! If option == 'pmatf' in findingaleph.f90, do
+  ! 45 -> choose input file number
+  ! 59 -> choose problem number range
+  ! 83 -> choose output file number
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
   integer, parameter :: wp=kind(1.0d0)
   real (kind=wp) :: P(4,4)
   real (kind=wp), parameter :: one = 1.0_wp, zero = 0.0_wp
@@ -35,13 +43,21 @@ contains
        ! thus
        ! mypos = (probnumber-30000001)*160+1+40*(i-1)+10*(j-1)
        open(input, file='matrizes01.txt', status='old', access='stream')
+       ! matrizes01.txt -> probnumber-00000001 (problems from 0 to 09999999)
+       ! matrizes02.txt -> probnumber-10000001 (problems from 10000000 to 19999999)
+       ! matrizes03.txt -> probnumber-20000001 (problems from 20000000 to 29999999)
+       ! matrizes04.txt -> probnumber-30000001 (problems from 30000000 to 39999999)
+       ! matrizes05.txt -> probnumber-40000001 (problems from 40000000 to 49999999)
+       ! matrizes06.txt -> probnumber-50000001 (problems from 50000000 to 59999999)
+       ! matrizes07.txt -> probnumber-60000001 (problems from 60000000 to 69999999)
+       ! matrizes08.txt -> probnumber-70000001 (problems from 70000000 to 79999999)
+       ! matrizes09.txt -> probnumber-80000001 (problems from 80000000 to 89999999)
+       ! matrizes10.txt -> probnumber-90000001 (problems from 90000000 to 99999999)
        inquire(input, pos=mypos)
        do i = 1,4
           do j = 1,4
              mypos = (probnumber-00000001)*160+1+40*(i-1)+10*(j-1)
-             !print *, mypos
              read(input, pos=mypos) teste
-             !print *, 1+40*(i-1)+10*(j-1)
              read(teste, fmt='(f9.7)') P(i,j)
           enddo
        enddo

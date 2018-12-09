@@ -51,4 +51,3 @@ function [meannormdif, meanerrors] = tests(outC, inC, batchsize)
       plot(normdif)
     end
 end
-
