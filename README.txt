@@ -1,6 +1,6 @@
 This file describes how to compile and run findingaleph to solve the problem
 described in [article]. If you are interested only in reading the resulting
-files, please refer to README_readpfile.txt
+files, check readpfile.m.
 
 0 - Files in this package
 -------------------------
