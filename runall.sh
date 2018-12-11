@@ -16,8 +16,9 @@
 
 for j in `seq 1 99`
 do
-#   let "j = 0"
-   for i in `seq 1 99999`;
+    #   let "j = 0"
+    # This code must be altered to run the correct problem number
+   for i in `seq 1 100000`;
    do
        let "m = 100000 * j + i"
        echo "Problem $m"
