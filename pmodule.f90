@@ -20,19 +20,33 @@ contains
   subroutine readpfile(probnumber,option)
 
     integer :: i, j, probnumber, mypos
-    character*9 :: teste
+    ! character*7 :: teste ! for pairs.txt
+    character*18 :: teste
     character*5 :: option
     integer, parameter :: input=47
 
     if (option .eq. 'pairs') then
-       open(input, file='pairs.txt', status = 'old', access='stream')
+!!$       open(input, file='pairs.txt', status = 'old', access='stream')
+!!$       inquire(input, pos=mypos)
+!!$       do i = 1,4
+!!$          do j = 1,4
+!!$             mypos = (probnumber-1)*160+1+40*(i-1)+10*(j-1)
+!!$             read(input, pos=mypos) teste
+!!$             !print *, "P(",i,",",j,")=", teste
+!!$             read(teste, fmt='(f9.7)') P(i,j)
+!!$          enddo
+!!$       enddo
+       !open(input, file='new_bact.txt', status = 'old', access='stream')
+       !open(input, file='p2275_aa.txt', status = 'old', access = 'stream')
+       !open(input, file='p2275_aa1.txt', status = 'old', access = 'stream')
+       open(input, file='p2275_aa2.txt', status = 'old', access = 'stream')
        inquire(input, pos=mypos)
        do i = 1,4
           do j = 1,4
-             mypos = (probnumber-1)*160+1+40*(i-1)+10*(j-1)
+             mypos = (probnumber-1)*16*19+1+4*19*(i-1)+19*(j-1)
              read(input, pos=mypos) teste
-             !print *, "P(",i,",",j,")=", teste
-             read(teste, fmt='(f9.7)') P(i,j)
+             !print *, "P(", i, ", ", j, ") = ", teste
+             read(teste, fmt='(f18.16)') P(i,j)
           enddo
        enddo
     elseif (option .eq. 'pmatf') then
@@ -76,7 +90,8 @@ contains
 
     if (option .eq. 'pairs') then
        open(output, file='pefilepairs.txt', status='old', access='stream', form='formatted', position='append')
-       write(output, fmt='(20(f10.7,x))', advance='yes') x
+       !write(output, fmt='(20(f10.7,x))', advance='yes') x
+       write(output, fmt='(20(f18.15,x))', advance='yes') x
     else 
        ! All P+E matrices are written to 10 files named pefile01.txt - pefile10.txt
        ! The number on this file must match the number on the matrizesxx.txt file

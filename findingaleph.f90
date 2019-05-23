@@ -13,7 +13,7 @@ program main
   integer*8 :: mypos
   integer, parameter :: input = 47
   real (kind = wp) :: x(20), fx, lower(20), upper(20), w(4), maxerror, &
-       maxerror_array(1428), PP(4,4,1428), PE(4,4), DXPE(4,4), normdif, t1, t2
+       maxerror_array(10000), PP(4,4,1428), PE(4,4), DXPE(4,4), normdif, t1, t2
   real (kind = wp), parameter :: eps = 1.e-3_wp
   double precision :: dlange
   character(len=9) :: teste, filename
@@ -31,7 +31,7 @@ program main
   !
   ! ./findingaleph <argument> <opt-arg>
   !
-  ! If <argument> is 'pairs', we will read the file with the bacterial data, pairs.txt
+  ! If <argument> is 'pairs', we will read the file with the bacterial data, pairs.txt or new_bact.txt
   ! If <argument> is 'pmatf', we will read the files with random data. There are 10 files,
   ! called matrizes01.txt--matrizes10.txt
   ! <opt-arg> is the number of the problem we wish to read. There are 100 million problems.
@@ -49,7 +49,9 @@ program main
         ! Reading file with matrices from bacterial data.
         !
         probnumber = 1
-        nprobs = 1428
+        !nprobs = 1428 ! for pairs.txt
+        !nprobs = 9512 ! for newbact.txt
+        nprobs = 2275 ! for p2275_aa.txt, p2275_aa1.txt, p2275_aa2.txt
      elseif ( option .eq. 'pmatf' ) then        
         !
         ! Reading file with matrices from random data.
@@ -160,7 +162,7 @@ program main
   enddo
   if ( option .eq. 'pairs' ) then
      print *, "Maximum error for all problems: ", maxval(maxerror_array)
-     print *, "Mean error for all problems: ", sum(maxerror_array)/1428.0_wp
+     print *, "Mean error for all problems: ", sum(maxerror_array)/9512!1428.0_wp
   endif
 
   call cpu_time(t2)
